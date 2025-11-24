@@ -21,8 +21,8 @@ export function QuoteBar() {
   }, []);
 
   return (
-    <div className="text-xs text-zinc-500 text-center py-2">
-      {quote}
+    <div className="text-center py-2 compact-section">
+      <p className="text-base text-zinc-300 text-center my-4 compact-section">{quote}</p>
     </div>
   );
 }

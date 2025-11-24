@@ -1,3 +1,5 @@
+import { Lock, Settings } from "lucide-react";
+
 interface HeaderProps {
   canInstall?: boolean;
   onInstallClick?: () => void;
@@ -12,9 +14,6 @@ export function Header({ canInstall = false, onInstallClick, onLock, onOpenSetti
         <h1 className="text-xl font-bold text-neutral-100 tracking-wide">
           Reborro
         </h1>
-        <p className="text-xs text-zinc-400">
-          Remember who borrowed what – and when it's due back.
-        </p>
       </div>
       <div className="flex items-center gap-3">
         {onLock && (
@@ -23,17 +22,17 @@ export function Header({ canInstall = false, onInstallClick, onLock, onOpenSetti
             className="p-2 text-neutral-400 hover:text-neutral-100 transition-colors"
             aria-label="Lock"
           >
-            🔒
+            <Lock className="h-7 w-7 text-zinc-300" />
           </button>
         )}
         {onOpenSettings && (
           <button
             type="button"
             onClick={onOpenSettings}
-            className="text-neutral-300 hover:text-white text-lg transition-colors"
+            className="text-neutral-300 hover:text-white transition-colors"
             aria-label="Open settings"
           >
-            ⚙
+            <Settings className="h-7 w-7 text-zinc-300" />
           </button>
         )}
         {canInstall && onInstallClick && (

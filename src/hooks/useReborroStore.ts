@@ -51,12 +51,14 @@ export function useReborroStore() {
     setItems(prev => prev.filter(item => item.id !== id));
   }
 
-  function markReturned(id: string) {
-    setItems(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, returned: true } : item
-      )
-    );
+  function markReturned(id: string, onAddToHistory?: (item: ReborroItem) => void) {
+    setItems(prev => {
+      const item = prev.find(i => i.id === id);
+      if (item && onAddToHistory) {
+        onAddToHistory(item);
+      }
+      return prev.filter(item => item.id !== id);
+    });
   }
 
   // ---- stats ----

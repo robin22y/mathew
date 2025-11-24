@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  height: 100%;
+}
+
+input:focus {
+  scroll-margin-top: 40vh;
+}
+
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
@@ -43,4 +51,21 @@
 
 .animate-scaleIn {
   animation: scaleIn 0.25s ease-out;
+}
+
+/* compress spacing for mobile */
+@media (max-width: 480px) {
+  .compact-section { margin-top: 8px !important; margin-bottom: 8px !important; }
+  .compact-pad { padding-top: 8px !important; padding-bottom: 8px !important; }
+  .compact-gap { gap: 6px !important; }
+  .compact-text { font-size: 13px !important; }
+}
+
+/* Keyboard-safe handling */
+:root {
+  --safe-area-bottom: env(safe-area-inset-bottom);
+}
+
+.keyboard-safe {
+  padding-bottom: calc(24px + env(keyboard-inset-height, 0px));
 }

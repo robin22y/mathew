@@ -13,4 +13,5 @@ export interface ReborroItem {
   returned: boolean;
   direction: "they_borrowed" | "i_borrowed";
   borrowDirection?: "they_owe_me" | "i_owe_them";
+  returnedAt?: number;
 }

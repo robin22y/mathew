@@ -10,6 +10,7 @@ import { FullscreenAd } from './components/FullscreenAd';
 import { BackupRestore } from './components/BackupRestore';
 import { QuoteBar } from './components/QuoteBar';
 import { useReborroStore } from './hooks/useReborroStore';
+import { useReborroHistory } from './hooks/useReborroHistory';
 import { usePWAInstall } from './hooks/usePWAInstall';
 import { usePinLock } from './hooks/usePinLock';
 import type { ReborroItem } from './types';
@@ -45,6 +46,7 @@ migrateBorrboxToReborro();
 function App() {
   const { locked, hasPin, requestUnlock, setNewPin, lockNow, disablePin, resetAllData } = usePinLock();
   const { items, addItem, updateItem, deleteItem, markReturned, overdueCount, dueThisWeekCount, moneyOwedToMe, moneyIOwe } = useReborroStore();
+  const { addToHistory } = useReborroHistory();
   const {
     canInstall,
     showHint,
@@ -88,7 +90,7 @@ function App() {
     return true;
   }
 
-  const handleAddClick = () => {
+  const handleAdd = () => {
     setEditingItem(null);
     setIsAddSheetOpen(true);
   };
@@ -131,7 +133,7 @@ function App() {
 
   const handleMarkReturned = () => {
     if (selectedItem) {
-      markReturned(selectedItem.id);
+      markReturned(selectedItem.id, addToHistory);
       setIsDetailPanelOpen(false);
       setSelectedItem(null);
     }
@@ -202,17 +204,9 @@ function App() {
           onOpenSettings={() => setSettingsOpen(true)} 
         />
 
-        <main className="pb-20">
-          <div className="px-4 pt-0.5 pb-2 space-y-2">
-            <button
-              onClick={handleAddClick}
-              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-600 text-white font-medium rounded-xl transition-colors"
-            >
-              + Add Borrowed Item
-            </button>
-          </div>
+        <main className="pb-28">
 
-          <div className="px-4 py-2 grid grid-cols-2 gap-2.5">
+          <div className="px-4 py-2 grid grid-cols-2 gap-2.5 compact-gap compact-section">
             <div className="bg-neutral-900/80 rounded-2xl p-2 border border-neutral-800 shadow-sm shadow-black/20">
               <div className="text-[11px] uppercase tracking-wide text-neutral-400 mb-1">
                 Overdue
@@ -239,13 +233,13 @@ function App() {
             </div>
           </div>
 
-          <div className="px-4 pb-3">
+          <div className="px-4 pb-3 compact-section">
             <QuoteBar />
           </div>
 
           <ItemList items={items} onItemClick={handleItemClick} />
 
-          <div className="px-4 py-4">
+          <div className="px-4 py-4 compact-section">
             <BackupRestore />
           </div>
 
@@ -257,10 +251,20 @@ function App() {
             </div>
           )}
 
-          <div className="px-4 pb-4">
+          <div className="px-4 pb-4 compact-section">
             <QuoteBar />
           </div>
         </main>
+
+        {/* Floating Add Button */}
+        <div className="fixed bottom-5 left-0 right-0 flex justify-center z-50 pointer-events-none">
+          <button
+            onClick={handleAdd}
+            className="pointer-events-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-full shadow-[0_10px_25px_rgba(0,0,0,0.5)] transition-all active:scale-95"
+          >
+            + Add Borrowed Item
+          </button>
+        </div>
 
         <AddItemSheet
           open={isAddSheetOpen}
