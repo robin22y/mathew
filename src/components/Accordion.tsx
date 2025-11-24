@@ -8,6 +8,12 @@ import {
 } from "react";
 import { ChevronDown } from "lucide-react";
 
+//
+// ────────────────────────────────────────────────────────────────
+//  TYPES
+// ────────────────────────────────────────────────────────────────
+//
+
 interface AccordionContextType {
   openItems: string[];
   toggleItem: (value: string) => void;
@@ -26,6 +32,14 @@ interface AccordionProps {
   children?: ReactNode;
 }
 
+type ChildWithValue = React.ReactElement<{ value?: string }>;
+
+//
+// ────────────────────────────────────────────────────────────────
+//  ROOT
+// ────────────────────────────────────────────────────────────────
+//
+
 export function Accordion({
   type = "single",
   collapsible = true,
@@ -43,6 +57,7 @@ export function Accordion({
         return [value];
       }
 
+      // multiple
       if (isOpen) return prev.filter((item) => item !== value);
       return [...prev, value];
     });
@@ -57,30 +72,45 @@ export function Accordion({
   );
 }
 
+//
+// ────────────────────────────────────────────────────────────────
+//  ITEM WRAPPER
+// ────────────────────────────────────────────────────────────────
+//
+
 interface AccordionItemProps {
   value: string;
   children: ReactNode;
 }
 
 export function AccordionItem({ value, children }: AccordionItemProps) {
+  // Case: children[] array
   if (Array.isArray(children)) {
     return (
       <>
         {children.map((child, index) =>
           isValidElement(child)
-            ? cloneElement(child, { value, key: index })
+            ? cloneElement(child as ChildWithValue, { value, key: index })
             : child
         )}
       </>
     );
   }
 
+  // Case: single React element
   if (isValidElement(children)) {
-    return cloneElement(children, { value });
+    return cloneElement(children as ChildWithValue, { value });
   }
 
+  // Case: plain text or invalid element
   return <>{children}</>;
 }
+
+//
+// ────────────────────────────────────────────────────────────────
+//  TRIGGER
+// ────────────────────────────────────────────────────────────────
+//
 
 interface AccordionTriggerProps {
   value?: string;
@@ -107,13 +137,19 @@ export function AccordionTrigger({
     >
       <span>{children}</span>
       <ChevronDown
-        className={`w-4 h-4 transition-transform ${
+        className={`w-4 h-4 transition-transform duration-200 ${
           isOpen ? "rotate-180" : "rotate-0"
         }`}
       />
     </button>
   );
 }
+
+//
+// ────────────────────────────────────────────────────────────────
+//  CONTENT
+// ────────────────────────────────────────────────────────────────
+//
 
 interface AccordionContentProps {
   value?: string;
@@ -134,5 +170,6 @@ export function AccordionContent({
   const isOpen = value ? openItems.includes(value) : false;
 
   if (!isOpen) return null;
+
   return <div className={className}>{children}</div>;
 }
