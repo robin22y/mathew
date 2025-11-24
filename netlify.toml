@@ -1,14 +1,18 @@
-# Allow static files to load (VERY IMPORTANT)
+# Serve service worker EXACTLY as file
 
 [[redirects]]
   from = "/sw.js"
   to = "/sw.js"
   status = 200
 
+# Serve manifest EXACTLY as file
+
 [[redirects]]
   from = "/manifest.json"
   to = "/manifest.json"
   status = 200
+
+# Serve icons EXACTLY as files
 
 [[redirects]]
   from = "/icon-192.png"
@@ -20,7 +24,8 @@
   to = "/icon-512.png"
   status = 200
 
-# Standard SPA fallback
+# Fallback for SPA routing
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
