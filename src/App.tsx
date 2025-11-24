@@ -8,6 +8,7 @@ import EnablePinModal from './components/EnablePinModal';
 import { SettingsSheet } from './components/SettingsSheet';
 import { AdBanner } from './components/AdBanner';
 import { FullscreenAd } from './components/FullscreenAd';
+import { BackupActions } from './components/BackupActions';
 import { useReborroStore } from './hooks/useReborroStore';
 import { usePWAInstall } from './hooks/usePWAInstall';
 import { usePinLock } from './hooks/usePinLock';
@@ -240,6 +241,10 @@ function App() {
           </div>
 
           <ItemList items={items} onItemClick={handleItemClick} />
+
+          <div className="px-4 py-4">
+            <BackupActions />
+          </div>
         </main>
 
         <AddItemSheet

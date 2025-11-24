@@ -136,44 +136,44 @@ export const BackupActions: React.FC = () => {
   };
 
   return (
-    <div className="space-y-3 rounded-xl border border-neutral-800 bg-neutral-900/60 p-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-sm font-semibold text-neutral-100">Backup & Restore</h2>
-          <p className="text-xs text-neutral-400">
-            Keep a copy of your Reborro data. You can share it to WhatsApp or email
-            yourself for later.
-          </p>
-        </div>
+    <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5 space-y-4">
+      <div>
+        <h2 className="text-sm font-semibold text-zinc-100">Backup & Restore</h2>
+        <p className="text-xs text-zinc-400 leading-relaxed">
+          Keep your Reborro data safe. Easily move it to a new device or store a copy for later.
+        </p>
       </div>
 
-      <div className="flex flex-wrap gap-2 pt-1">
-        <button
-          onClick={handleDownloadBackup}
-          disabled={isExporting}
-          className="inline-flex items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-xs font-medium text-neutral-100 hover:bg-neutral-700 disabled:opacity-50"
-        >
-          {isExporting ? "Preparing…" : "Download backup"}
-        </button>
+      {/* PRIMARY */}
+      <button
+        onClick={handleShareBackup}
+        disabled={isExporting}
+        className="w-full rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold text-black hover:bg-emerald-400 disabled:opacity-50"
+      >
+        {isExporting ? "Preparing…" : "Share backup (WhatsApp, email)"}
+      </button>
 
-        <button
-          onClick={handleShareBackup}
-          disabled={isExporting}
-          className="inline-flex items-center justify-center rounded-lg bg-emerald-500/90 px-3 py-2 text-xs font-semibold text-black hover:bg-emerald-400 disabled:opacity-50"
-        >
-          {isExporting ? "Preparing…" : "Share backup (WhatsApp, email…)"}
-        </button>
+      {/* DOWNLOAD */}
+      <button
+        onClick={handleDownloadBackup}
+        disabled={isExporting}
+        className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm font-medium text-zinc-100 hover:bg-zinc-700 disabled:opacity-50"
+      >
+        {isExporting ? "Preparing…" : "Download backup file"}
+      </button>
 
-        <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-neutral-700 bg-neutral-800 px-3 py-2 text-xs font-medium text-neutral-100 hover:bg-neutral-700">
+      {/* IMPORT */}
+      <label className="w-full block">
+        <div className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-4 py-3 text-sm font-medium text-zinc-100 text-center hover:bg-zinc-700 cursor-pointer">
           {isImporting ? "Importing…" : "Import backup file"}
-          <input
-            type="file"
-            accept="application/json"
-            onChange={handleImportFileChange}
-            className="hidden"
-          />
-        </label>
-      </div>
+        </div>
+        <input
+          type="file"
+          accept="application/json"
+          onChange={handleImportFileChange}
+          className="hidden"
+        />
+      </label>
 
       {importError && (
         <p className="text-xs text-red-400">
@@ -181,10 +181,9 @@ export const BackupActions: React.FC = () => {
         </p>
       )}
 
-      <p className="text-[11px] leading-snug text-neutral-500">
-        Tip: On your phone, use <span className="font-semibold">Share backup</span> and
-        choose WhatsApp to send the file to yourself or to someone you trust. You can
-        later re-import it on any device running Reborro.
+      <p className="text-[11px] leading-snug text-zinc-500 pt-1">
+        Tip: On your phone, choose <span className="font-semibold">Share backup</span> and
+        send it to your own WhatsApp chat. It becomes your permanent backup.
       </p>
     </div>
   );
