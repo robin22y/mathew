@@ -1,30 +1,17 @@
-# Serve service worker EXACTLY as file
-
 [[redirects]]
-  from = "/sw.js"
-  to = "/sw.js"
-  status = 200
-
-# Serve manifest EXACTLY as file
-
-[[redirects]]
-  from = "/manifest.json"
-  to = "/manifest.json"
-  status = 200
-
-# Serve icons EXACTLY as files
-
-[[redirects]]
-  from = "/icon-192.png"
-  to = "/icon-192.png"
+  from = "/assets/*"
+  to = "/assets/:splat"
   status = 200
 
 [[redirects]]
-  from = "/icon-512.png"
-  to = "/icon-512.png"
+  from = "/favicon*"
+  to = "/favicon:splat"
   status = 200
 
-# Fallback for SPA routing
+[[redirects]]
+  from = "/icon-*.png"
+  to = "/icon-:splat.png"
+  status = 200
 
 [[redirects]]
   from = "/*"
