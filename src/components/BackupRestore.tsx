@@ -60,7 +60,7 @@ function formatDate(timestamp: number): string {
 
 export function BackupRestore() {
   const { items } = useReborroStore();
-  const { recentHistory, deleteReturnedItem } = useReborroHistory();
+  const { recentHistory } = useReborroHistory();
   const [open, setOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
