@@ -6,10 +6,9 @@ import { ItemDetailPanel } from './components/ItemDetailPanel';
 import { LockScreen } from './components/LockScreen';
 import EnablePinModal from './components/EnablePinModal';
 import { SettingsSheet } from './components/SettingsSheet';
-import { AdBanner } from './components/AdBanner';
 import { FullscreenAd } from './components/FullscreenAd';
-import { BackupActions } from './components/BackupActions';
-import { QuoteAdSlot } from './components/QuoteAdSlot';
+import { BackupRestore } from './components/BackupRestore';
+import { QuoteBar } from './components/QuoteBar';
 import { useReborroStore } from './hooks/useReborroStore';
 import { usePWAInstall } from './hooks/usePWAInstall';
 import { usePinLock } from './hooks/usePinLock';
@@ -236,22 +235,18 @@ function App() {
             </div>
           </div>
 
-          {/* SINGLE PREMIUM AD SLOT */}
           <div className="px-4 pb-3">
-            <AdBanner placement="main" />
+            <QuoteBar />
           </div>
 
           <ItemList items={items} onItemClick={handleItemClick} />
 
           <div className="px-4 py-4">
-            <BackupActions />
+            <BackupRestore />
           </div>
 
-          <div className="mt-4 mx-4 mb-4 rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
-            <QuoteAdSlot />
-            <div className="text-[10px] text-zinc-600 mt-1 uppercase tracking-wider text-center">
-              Sponsored Hint
-            </div>
+          <div className="px-4 pb-4">
+            <QuoteBar />
           </div>
         </main>
 
