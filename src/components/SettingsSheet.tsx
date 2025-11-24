@@ -1,4 +1,4 @@
-import { BackupActions } from "./BackupActions";
+import { BackupRestore } from "./BackupRestore";
 
 interface SettingsSheetProps {
   open: boolean;
@@ -59,7 +59,7 @@ export function SettingsSheet({
               </div>
             </div>
 
-            <BackupActions />
+            <BackupRestore />
 
             <button
               onClick={onClose}

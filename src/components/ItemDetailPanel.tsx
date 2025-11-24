@@ -82,7 +82,7 @@ export function ItemDetailPanel({
   const personName = item.personName?.trim() || '';
   const rightSide =
     item.type === 'money'
-      ? `£${item.amount?.toFixed(2)} (Money)`
+      ? `${item.amount?.toFixed(2)} (Money)`
       : item.itemName?.trim() || 'Item';
   const displayTitle = !personName ? rightSide : `${personName} — ${rightSide}`;
 

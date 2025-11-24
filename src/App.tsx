@@ -225,13 +225,13 @@ function App() {
               <div className="text-[11px] uppercase tracking-wide text-neutral-400 mb-1">
                 Money Owed to Me
               </div>
-              <div className="text-base font-semibold text-emerald-400">£{moneyOwedToMe.toFixed(2)}</div>
+              <div className="text-base font-semibold text-emerald-400">{moneyOwedToMe.toFixed(2)}</div>
             </div>
             <div className="bg-neutral-900/80 rounded-2xl p-2 border border-neutral-800 shadow-sm shadow-black/20">
               <div className="text-[11px] uppercase tracking-wide text-neutral-400 mb-1">
                 Money I Owe
               </div>
-              <div className="text-base font-semibold text-neutral-100">£{moneyIOwe.toFixed(2)}</div>
+              <div className="text-base font-semibold text-neutral-100">{moneyIOwe.toFixed(2)}</div>
             </div>
           </div>
 

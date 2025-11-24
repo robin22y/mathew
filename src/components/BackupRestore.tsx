@@ -240,6 +240,16 @@ export function BackupRestore() {
             It becomes your permanent backup.
           </p>
 
+          <div className="pt-6 text-center text-[11px] text-zinc-500">
+            <a href="https://reborro.com/privacy" target="_blank" rel="noreferrer" className="hover:text-zinc-300">
+              Privacy
+            </a>
+            {" · "}
+            <a href="https://reborro.com/terms" target="_blank" rel="noreferrer" className="hover:text-zinc-300">
+              Terms
+            </a>
+          </div>
+
         </div>
       )}
     </div>

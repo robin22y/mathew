@@ -101,7 +101,7 @@ export function ItemList({ items, onItemClick }: ItemListProps) {
                 </div>
                 <div className="text-sm text-neutral-300">
                   {item.type === 'money'
-                    ? `£${item.amount?.toFixed(2)} (Money)`
+                    ? `${item.amount?.toFixed(2)} (Money)`
                     : item.itemName || 'Item'}
                 </div>
               </div>

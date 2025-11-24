@@ -39,7 +39,7 @@ function buildToneMessage(item: ReborroItem, tone: ReminderTone): string {
   const name = item.personName || 'there';
   const description =
     item.type === 'money'
-      ? `£${(item.amount ?? 0).toFixed(2)}`
+      ? `${(item.amount ?? 0).toFixed(2)}`
       : item.itemName || 'item';
   const duePhrase = getDuePhrase(item.dueDate);
 

@@ -194,7 +194,6 @@ export function AddItemSheet({ open = false, onClose, editingItem, onSave }: Add
               </label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400">
-                  £
                 </span>
                 <input
                   type="number"

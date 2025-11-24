@@ -31,6 +31,17 @@
   to = "/sw.js"
   status = 200
 
+# Privacy and Terms pages (for landing site)
+[[redirects]]
+  from = "/privacy"
+  to = "/landing/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to = "/landing/terms.html"
+  status = 200
+
 # Catch-all for SPA routing
 [[redirects]]
   from = "/*"
