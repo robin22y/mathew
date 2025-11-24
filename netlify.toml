@@ -8,12 +8,32 @@
   to = "/favicon:splat"
   status = 200
 
+# Explicit PNG rules (wildcards WILL NOT work here)
 [[redirects]]
-  from = "/icon-*.png"
-  to = "/icon-:splat.png"
+  from = "/icon-192.png"
+  to = "/icon-192.png"
   status = 200
 
+[[redirects]]
+  from = "/icon-512.png"
+  to = "/icon-512.png"
+  status = 200
+
+# Optional: manifest
+[[redirects]]
+  from = "/manifest.webmanifest"
+  to = "/manifest.webmanifest"
+  status = 200
+
+# Optional: service worker
+[[redirects]]
+  from = "/sw.js"
+  to = "/sw.js"
+  status = 200
+
+# Catch-all for SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
