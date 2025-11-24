@@ -4,9 +4,9 @@ interface LockScreenProps {
   requireSetup: boolean;
   onSubmitPin: (pin: string) => Promise<boolean>;
   onSubmitNewPin: (pin: string) => Promise<void>;
-  error?: boolean;                // external error flag from parent (optional)
+  error?: boolean;
   allowReset: boolean;
-  onResetRequest: () => void;     // should clear ALL local data + reload
+  onResetRequest: () => void;
 }
 
 type Mode = "setup" | "confirm" | "unlock";
@@ -19,136 +19,96 @@ export function LockScreen({
   allowReset,
   onResetRequest,
 }: LockScreenProps) {
-  const [vh, setVh] = useState(window.innerHeight * 0.01);
   const [mode, setMode] = useState<Mode>(requireSetup ? "setup" : "unlock");
-  const [currentPin, setCurrentPin] = useState("");   // what user is currently typing (0–4 digits)
-  const [firstPin, setFirstPin] = useState<string | null>(null); // for setup → confirm
+  const [pin, setPin] = useState("");
+  const [firstPin, setFirstPin] = useState<string | null>(null);
   const [localError, setLocalError] = useState<string | null>(null);
-  const [shake, setShake] = useState(false);
-  const [showReset, setShowReset] = useState(false);
-  const [resetInput, setResetInput] = useState("");
+  const [keyboardOpen, setKeyboardOpen] = useState(false);
+  const hiddenInputRef = useRef<HTMLInputElement | null>(null);
 
-  const pinInputRef = useRef<HTMLInputElement | null>(null);
-
+  // Detect keyboard visibility
   useEffect(() => {
-    const updateVh = () => {
-      setVh(window.innerHeight * 0.01);
+    const handleResize = () => {
+      const vh = window.visualViewport?.height || window.innerHeight;
+      const screenHeight = window.innerHeight;
+      const kb = vh < screenHeight * 0.75; // if viewport shrinks by ~25%
+      setKeyboardOpen(kb);
     };
-    window.addEventListener("resize", updateVh);
-    window.visualViewport?.addEventListener("resize", updateVh);
 
-    updateVh();
+    window.visualViewport?.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
+    handleResize();
 
     return () => {
-      window.removeEventListener("resize", updateVh);
-      window.visualViewport?.removeEventListener("resize", updateVh);
+      window.visualViewport?.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  // Keep mode in sync if parent toggles requireSetup at runtime
+  // Sync with parent
   useEffect(() => {
     setMode(requireSetup ? "setup" : "unlock");
-    setCurrentPin("");
+    setPin("");
     setFirstPin(null);
     setLocalError(null);
   }, [requireSetup]);
 
-  // Always focus the hidden input when the screen mounts / when mode changes
+  // Auto-focus hidden input
   useEffect(() => {
-    pinInputRef.current?.focus();
+    hiddenInputRef.current?.focus();
   }, [mode]);
 
-  // When external error flag toggles true (parent failed PIN), show error + shake
   useEffect(() => {
-    if (error) {
-      triggerError("Incorrect PIN");
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (error) triggerError("Incorrect PIN");
   }, [error]);
 
   function triggerError(msg: string) {
     setLocalError(msg);
-    setShake(true);
-    setTimeout(() => setShake(false), 300);
-    setCurrentPin("");
-    pinInputRef.current && (pinInputRef.current.value = "");
-    pinInputRef.current?.focus();
+    setPin("");
+    if (hiddenInputRef.current) hiddenInputRef.current.value = "";
   }
 
-  async function handleComplete(pin: string) {
+  async function handleComplete(p: string) {
     if (mode === "setup") {
-      // First entry of new PIN
-      setFirstPin(pin);
-      setCurrentPin("");
-      pinInputRef.current && (pinInputRef.current.value = "");
-      setLocalError(null);
+      setFirstPin(p);
+      setPin("");
+      hiddenInputRef.current!.value = "";
       setMode("confirm");
       return;
     }
 
     if (mode === "confirm") {
-      // Confirm new PIN
-      if (!firstPin) {
-        // Should not happen, but if it does, reset back to setup
-        setMode("setup");
-        setCurrentPin("");
-        pinInputRef.current && (pinInputRef.current.value = "");
-        setLocalError(null);
-        return;
-      }
-
-      if (pin !== firstPin) {
-        triggerError("PINs do not match. Try again.");
-        // Reset whole flow
+      if (p !== firstPin) {
+        triggerError("PINs do not match");
         setFirstPin(null);
         setMode("setup");
         return;
       }
 
-      // PINs match → save via parent
       try {
-        await onSubmitNewPin(pin);
-        setLocalError(null);
-        // parent will usually unmount this screen after success
-      } catch (e) {
-        triggerError("Could not save PIN. Try again.");
+        await onSubmitNewPin(p);
+      } catch {
+        triggerError("Could not save PIN");
       }
       return;
     }
 
     if (mode === "unlock") {
-      try {
-        const ok = await onSubmitPin(pin);
-        if (!ok) {
-          triggerError("Incorrect PIN");
-        } else {
-          setLocalError(null);
-          // parent should unmount on success
-        }
-      } catch (e) {
-        triggerError("Error verifying PIN");
-      }
+      const ok = await onSubmitPin(p);
+      if (!ok) triggerError("Incorrect PIN");
+      return;
     }
   }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const raw = e.target.value.replace(/\D/g, ""); // digits only
-    let next = raw.slice(0, 4);                   // max 4 digits
-    setCurrentPin(next);
-
-    if (next.length === 4) {
-      // Slight timeout so UI updates before async
-      setTimeout(() => {
-        handleComplete(next);
-      }, 10);
-    }
+  function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const raw = e.target.value.replace(/\D/g, "").slice(0, 4);
+    setPin(raw);
+    if (raw.length === 4) setTimeout(() => handleComplete(raw), 10);
   }
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Backspace") {
-      if (!currentPin.length) return;
-      const next = currentPin.slice(0, -1);
-      setCurrentPin(next);
+  function onBackspace(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Backspace" && pin.length > 0) {
+      setPin(pin.slice(0, -1));
     }
   }
 
@@ -159,58 +119,47 @@ export function LockScreen({
       ? "Confirm your PIN"
       : "Enter your PIN";
 
-  const subtitle =
-    mode === "setup"
-      ? "This PIN will protect your items on this device."
-      : mode === "confirm"
-      ? "Type the same PIN again to confirm."
-      : "Unlock Reborro on this device.";
-
-  const effectiveError = localError;
-
-  const canAskReset = allowReset && !requireSetup && mode === "unlock";
+  const compact = keyboardOpen; // collapse layout when keyboard is open
 
   return (
     <div
-      className="flex flex-col items-center justify-center px-6 bg-neutral-950"
-      style={{ height: `calc(${vh}px * 100)` }}
+      className="fixed inset-0 z-50 bg-neutral-950 flex flex-col items-center justify-center px-5"
+      style={{
+        height: "100dvh", // real safe mobile height (iOS + Android)
+      }}
     >
-      {/* Hidden input – real focus target */}
+      {/* Hidden input */}
       <input
-        ref={pinInputRef}
-        autoFocus
-        inputMode="numeric"
+        ref={hiddenInputRef}
         type="tel"
-        className="absolute opacity-0 w-[1px] h-[1px] -left-[9999px]"
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
+        inputMode="numeric"
+        autoFocus
+        onChange={onChange}
+        onKeyDown={onBackspace}
+        className="absolute w-[1px] h-[1px] -left-[9999px] opacity-0"
       />
 
-      <div className="w-full max-w-sm mx-auto bg-zinc-900 rounded-2xl p-6 shadow-2xl border border-zinc-800">
-        <h2 className="text-lg font-semibold text-center text-neutral-50 mb-1">
+      {/* Card */}
+      <div className="w-full max-w-xs bg-neutral-900 border border-neutral-800 rounded-2xl p-6 flex flex-col items-center">
+        {/* Title */}
+        <h2 className="text-lg font-semibold text-neutral-50 mb-6 text-center">
           {title}
         </h2>
-        <p className="text-sm text-neutral-400 text-center mb-6">
-          {subtitle}
-        </p>
 
-        {/* PIN dots / boxes */}
-        <div
-          className={`flex justify-center gap-3 mb-4 transition-transform ${
-            shake ? "-translate-x-1 animate-[shake_0.15s_3]" : ""
-          }`}
-        >
+        {/* PIN dots */}
+        <div className="flex gap-4 mb-6">
           {[0, 1, 2, 3].map((i) => {
-            const filled = i < currentPin.length;
+            const filled = i < pin.length;
             return (
               <div
                 key={i}
-                className={`w-11 h-11 rounded-xl border text-center flex items-center justify-center text-xl font-semibold ${
-                  filled
+                className={
+                  "w-12 h-12 rounded-xl flex items-center justify-center text-2xl font-bold border " +
+                  (filled
                     ? "bg-neutral-100 text-neutral-900 border-neutral-100"
-                    : "bg-neutral-900 border-neutral-700 text-neutral-500"
-                }`}
-                onClick={() => pinInputRef.current?.focus()}
+                    : "bg-neutral-800 text-neutral-600 border-neutral-700")
+                }
+                onClick={() => hiddenInputRef.current?.focus()}
               >
                 {filled ? "•" : ""}
               </div>
@@ -218,76 +167,21 @@ export function LockScreen({
           })}
         </div>
 
-        <p className="text-xs text-neutral-500 text-center mb-4">
-          Tap the boxes and type your 4-digit PIN.
-        </p>
-
-        {effectiveError && (
-          <div className="text-xs text-red-400 text-center mb-3">
-            {effectiveError}
-          </div>
+        {/* ERROR message */}
+        {!compact && localError && (
+          <p className="text-red-400 text-sm text-center mb-4">{localError}</p>
         )}
 
-        {/* Reset / forgot PIN */}
-        {canAskReset && (
-          <div className="text-center mt-4">
-            <button
-              type="button"
-              onClick={() => setShowReset(true)}
-              className="text-xs text-neutral-500 hover:text-neutral-300 underline underline-offset-2"
-            >
-              Forgot PIN? Clear everything.
-            </button>
-          </div>
+        {/* Reset link */}
+        {!compact && allowReset && mode === "unlock" && (
+          <button
+            className="text-neutral-400 text-xs underline underline-offset-2"
+            onClick={onResetRequest}
+          >
+            Forgot PIN? Clear all data
+          </button>
         )}
       </div>
-
-      {/* RESET MODAL */}
-      {showReset && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-4">
-          <div className="w-full max-w-sm bg-zinc-900 rounded-2xl p-5 shadow-2xl border border-zinc-800">
-            <h3 className="text-base font-semibold text-neutral-50 mb-2 text-center">
-              Reset &amp; Clear Data
-            </h3>
-            <p className="text-xs text-neutral-400 mb-4 text-center">
-              Type <span className="font-mono text-neutral-100">RESET</span> to
-              remove all items and PIN on this device.
-            </p>
-            <input
-              value={resetInput}
-              onChange={(e) => setResetInput(e.target.value.toUpperCase())}
-              className="w-full px-4 py-2.5 bg-neutral-900 border border-neutral-700 rounded-lg text-neutral-100 text-center font-mono text-sm tracking-[0.3em]"
-              placeholder="RESET"
-            />
-            <div className="flex gap-3 mt-4">
-              <button
-                type="button"
-                onClick={() => setShowReset(false)}
-                className="flex-1 px-4 py-2 text-sm rounded-lg bg-neutral-800 text-neutral-100 hover:bg-neutral-700"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                disabled={resetInput !== "RESET"}
-                onClick={() => {
-                  onResetRequest();
-                  // parent should clear storage + reload; we just close
-                  setShowReset(false);
-                  setResetInput("");
-                }}
-                className={`flex-1 px-4 py-2 text-sm rounded-lg ${
-                  resetInput === "RESET"
-                    ? "bg-red-500 text-white hover:bg-red-600"
-                    : "bg-neutral-700 text-neutral-400 cursor-not-allowed"
-                }`}
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
