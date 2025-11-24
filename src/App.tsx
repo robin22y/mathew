@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { AddItemSheet } from './components/AddItemSheet';
 import { ItemList } from './components/ItemList';
@@ -61,7 +61,6 @@ function App() {
   const [forcePinSetup, setForcePinSetup] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isFullscreenAdOpen, setIsFullscreenAdOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Track app open date on first render
   useEffect(() => {
@@ -144,67 +143,6 @@ function App() {
     }
   };
 
-  const handleExport = () => {
-    const dataStr = JSON.stringify(items, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'reborro-backup.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleImport = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFilePicked = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      const text = await file.text();
-      const parsed = JSON.parse(text);
-      
-      if (!Array.isArray(parsed)) {
-        alert('Invalid file format. Expected an array of items.');
-        return;
-      }
-
-      const isValid = parsed.every((item: unknown) => {
-        if (typeof item !== 'object' || item === null) return false;
-        const i = item as Record<string, unknown>;
-        return (
-          typeof i.id === 'string' &&
-          typeof i.type === 'string' &&
-          (i.type === 'money' || i.type === 'object') &&
-          typeof i.personName === 'string' &&
-          typeof i.borrowedAt === 'string' &&
-          typeof i.dueDate === 'string' &&
-          typeof i.returned === 'boolean' &&
-          typeof i.direction === 'string' &&
-          (i.direction === 'they_borrowed' || i.direction === 'i_borrowed')
-        );
-      });
-
-      if (!isValid) {
-        alert('Invalid file format. Items do not match expected structure.');
-        return;
-      }
-
-      localStorage.setItem('reborro-items', JSON.stringify(parsed));
-      window.location.reload();
-    } catch (error) {
-      alert('Failed to import data. Please check the file format.');
-    }
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  };
 
 
   const handlePinSubmit = async (pin: string): Promise<boolean> => {
@@ -267,27 +205,6 @@ function App() {
             >
               + Add Borrowed Item
             </button>
-            <div className="flex gap-2">
-              <button
-                onClick={handleExport}
-                className="flex-1 py-2 text-xs font-medium text-neutral-300 bg-neutral-900 hover:bg-neutral-800 rounded-lg transition-colors"
-              >
-                Export Data
-              </button>
-              <button
-                onClick={handleImport}
-                className="flex-1 py-2 text-xs font-medium text-neutral-300 bg-neutral-900 hover:bg-neutral-800 rounded-lg transition-colors"
-              >
-                Import Data
-              </button>
-            </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".json"
-              onChange={handleFilePicked}
-              className="hidden"
-            />
           </div>
 
           <div className="px-4 py-2 grid grid-cols-2 gap-2.5">
