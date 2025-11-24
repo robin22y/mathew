@@ -75,11 +75,15 @@ function App() {
       if (!hasPin) {
         setShowEnablePin(true);
       }
-      // Show fullscreen ad after successful Add Item
-      if (shouldShowFullscreenAd()) {
-        setIsFullscreenAdOpen(true);
-        const todayStr = new Date().toISOString().slice(0, 10);
-        localStorage.setItem("borrbox-last-fullscreen-ad", todayStr);
+      // Block fullscreen ad on very first use
+      if (!localStorage.getItem("borrbox-first-use-block")) {
+        localStorage.setItem("borrbox-first-use-block", "1");
+      } else {
+        if (shouldShowFullscreenAd()) {
+          setIsFullscreenAdOpen(true);
+          const todayStr = new Date().toISOString().slice(0, 10);
+          localStorage.setItem("borrbox-last-fullscreen-ad", todayStr);
+        }
       }
     } else {
       updateItem(id, item);
