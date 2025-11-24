@@ -9,6 +9,7 @@ import { SettingsSheet } from './components/SettingsSheet';
 import { AdBanner } from './components/AdBanner';
 import { FullscreenAd } from './components/FullscreenAd';
 import { BackupActions } from './components/BackupActions';
+import { QuoteAdSlot } from './components/QuoteAdSlot';
 import { useReborroStore } from './hooks/useReborroStore';
 import { usePWAInstall } from './hooks/usePWAInstall';
 import { usePinLock } from './hooks/usePinLock';
@@ -244,6 +245,13 @@ function App() {
 
           <div className="px-4 py-4">
             <BackupActions />
+          </div>
+
+          <div className="mt-4 mx-4 mb-4 rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
+            <QuoteAdSlot />
+            <div className="text-[10px] text-zinc-600 mt-1 uppercase tracking-wider text-center">
+              Sponsored Hint
+            </div>
           </div>
         </main>
 

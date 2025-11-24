@@ -3,33 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reborro – Remember who borrowed what</title>
+    <title>Reborro – Track borrowed items easily</title>
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- SEO -->
-    <meta name="description" content="Reborro is the simplest way to track borrowed money and items. No account needed. Fast and private." />
+    <meta
+      name="description"
+      content="Reborro helps you track borrowed money and items. Simple, private, and works on all phones."
+    />
+
+    <!-- Background gradient styles -->
+    <style>
+      body::before {
+        content: "";
+        position: fixed;
+        top: -20%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(255,255,255,0.06), transparent 70%);
+        filter: blur(100px);
+        z-index: -1;
+      }
+    </style>
   </head>
 
-  <body class="bg-zinc-950 text-white">
+  <body class="bg-zinc-950 text-white font-sans selection:bg-indigo-500 selection:text-white">
 
-    <!-- HERO SECTION -->
+    <!-- HERO -->
     <section class="min-h-screen flex flex-col items-center justify-center text-center px-6">
       
-      <!-- Logo -->
-      <img src="./icon-512.png" alt="Reborro Logo" class="w-24 h-24 mb-6 opacity-90" />
+      <!-- Logo box -->
+      <div class="bg-zinc-900/60 p-5 rounded-2xl border border-white/5 shadow-sm mb-6">
+        <img 
+          src="./icon-512.png" 
+          alt="Reborro Logo" 
+          class="w-24 h-24 opacity-95"
+        />
+      </div>
 
-      <h1 class="text-5xl font-bold mb-4">Reborro</h1>
+      <!-- Title -->
+      <h1 class="text-5xl md:text-6xl font-bold tracking-tight mb-4">
+        Reborro
+      </h1>
 
-      <p class="text-zinc-400 text-lg max-w-sm mb-10 leading-relaxed">
-        Track borrowed money and items.  
+      <!-- Subtitle -->
+      <p class="text-zinc-400 text-lg max-w-md mb-10 leading-relaxed">
+        Track borrowed money and items.
+        <br />
         Simple for everyone.
       </p>
 
+      <!-- CTA -->
       <a
         href="https://app.reborro.com"
-        class="bg-white text-black px-10 py-4 rounded-full font-semibold text-lg shadow-lg hover:scale-105 active:scale-95 transition"
+        class="bg-white text-black px-10 py-4 rounded-full font-semibold text-lg shadow-lg hover:scale-105 active:scale-95 transition-all"
       >
         Open the App
       </a>
@@ -41,23 +71,26 @@
     </section>
 
     <!-- FEATURES -->
-    <section class="py-20 px-6">
-      <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <section class="py-16 px-6">
+      <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-center">
 
+        <!-- Feature 1 -->
         <div class="space-y-3">
-          <div class="text-3xl">➕</div>
+          <div class="text-4xl text-indigo-400">➕</div>
           <h3 class="font-semibold text-lg">Add item</h3>
           <p class="text-zinc-500 text-sm">Who borrowed it?</p>
         </div>
 
+        <!-- Feature 2 -->
         <div class="space-y-3">
-          <div class="text-3xl">💬</div>
+          <div class="text-4xl text-green-400">💬</div>
           <h3 class="font-semibold text-lg">Send reminder</h3>
           <p class="text-zinc-500 text-sm">WhatsApp in one tap.</p>
         </div>
 
+        <!-- Feature 3 -->
         <div class="space-y-3">
-          <div class="text-3xl">⏳</div>
+          <div class="text-4xl text-yellow-400">⏳</div>
           <h3 class="font-semibold text-lg">Due dates</h3>
           <p class="text-zinc-500 text-sm">Never forget again.</p>
         </div>
@@ -72,4 +105,3 @@
 
   </body>
 </html>
-
