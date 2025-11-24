@@ -1,5 +1,3 @@
-import React from "react";
-
 interface InstallHintBarProps {
   onInstall: () => void;
   onClose: () => void;

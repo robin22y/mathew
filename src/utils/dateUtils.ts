@@ -1,11 +1,11 @@
 // Utility functions stub - Week 1 skeleton
 // TODO: Implement date formatting and due status calculations
 
-export function formatDate(dateString: string): string {
-  return dateString;
+export function formatDate(_dateString: string): string {
+  return '';
 }
 
-export function getDueStatus(dueDateString: string): {
+export function getDueStatus(_dueDateString: string): {
   text: string;
   isOverdue: boolean;
   isToday: boolean;
@@ -17,6 +17,6 @@ export function getDueStatus(dueDateString: string): {
   };
 }
 
-export function getDayName(dateString: string): string {
+export function getDayName(_dateString: string): string {
   return '';
 }

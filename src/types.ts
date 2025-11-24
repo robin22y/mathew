@@ -7,6 +7,7 @@ export interface BorrboxItem {
   amount?: number;
   itemName?: string;
   notes?: string;
+  borrowerPhone?: string;
   borrowedAt: string;
   dueDate: string;
   returned: boolean;

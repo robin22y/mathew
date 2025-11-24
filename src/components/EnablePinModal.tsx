@@ -1,5 +1,3 @@
-import React from "react";
-
 interface EnablePinModalProps {
   open: boolean;
   onAccept: () => void;
