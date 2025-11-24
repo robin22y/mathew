@@ -1,10 +1,10 @@
 import { useMemo, useState } from 'react';
-import type { BorrboxItem } from '../types';
+import type { ReborroItem } from '../types';
 
 type ReminderTone = 'polite' | 'friendly' | 'direct' | 'funny';
 
 interface ReminderSheetProps {
-  item: BorrboxItem;
+  item: ReborroItem;
   onClose: () => void;
 }
 
@@ -35,7 +35,7 @@ function getDuePhrase(dueDateString: string): string {
   return `is due on ${formatReminderDate(dueDateString)}`;
 }
 
-function buildToneMessage(item: BorrboxItem, tone: ReminderTone): string {
+function buildToneMessage(item: ReborroItem, tone: ReminderTone): string {
   const name = item.personName || 'there';
   const description =
     item.type === 'money'
@@ -47,34 +47,34 @@ function buildToneMessage(item: BorrboxItem, tone: ReminderTone): string {
     // You borrowed from them
     switch (tone) {
       case 'friendly':
-        return `Hey ${name}! Just a quick note about the ${description} I borrowed from you – it ${duePhrase}. I'll sort it on time. (Sent via Borrbox)`;
+        return `Hey ${name}! Just a quick note about the ${description} I borrowed from you – it ${duePhrase}. I'll sort it on time. (Sent via Reborro)`;
 
       case 'direct':
-        return `Hi ${name}, this is about the ${description} I borrowed from you – it ${duePhrase}. I'll return/settle it as agreed. (Sent via Borrbox)`;
+        return `Hi ${name}, this is about the ${description} I borrowed from you – it ${duePhrase}. I'll return/settle it as agreed. (Sent via Reborro)`;
 
       case 'funny':
-        return `Hey ${name}, remember that ${description} I kidnapped from you? 😅 It ${duePhrase}. I'll bring it back before it files a missing item report. (Sent via Borrbox)`;
+        return `Hey ${name}, remember that ${description} I kidnapped from you? 😅 It ${duePhrase}. I'll bring it back before it files a missing item report. (Sent via Reborro)`;
 
       case 'polite':
       default:
-        return `Hi ${name}, just checking in about the ${description} I borrowed from you. It ${duePhrase}. I'll return/settle it on time. (Sent via Borrbox)`;
+        return `Hi ${name}, just checking in about the ${description} I borrowed from you. It ${duePhrase}. I'll return/settle it on time. (Sent via Reborro)`;
     }
   }
 
   // They borrowed from you
   switch (tone) {
     case 'friendly':
-      return `Hey ${name}! Just a friendly reminder about the ${description} you borrowed – it ${duePhrase}. When you get a moment, could you return/settle it? (Sent via Borrbox)`;
+      return `Hey ${name}! Just a friendly reminder about the ${description} you borrowed – it ${duePhrase}. When you get a moment, could you return/settle it? (Sent via Reborro)`;
 
     case 'direct':
-      return `Hi ${name}, this is a reminder about the ${description} you borrowed. It ${duePhrase}. Please return/settle it. (Sent via Borrbox)`;
+      return `Hi ${name}, this is a reminder about the ${description} you borrowed. It ${duePhrase}. Please return/settle it. (Sent via Reborro)`;
 
     case 'funny':
-      return `Oi ${name} 😄 remember that ${description} you borrowed? It ${duePhrase}. My ${description} misses home – can you send it back soon? (Sent via Borrbox)`;
+      return `Oi ${name} 😄 remember that ${description} you borrowed? It ${duePhrase}. My ${description} misses home – can you send it back soon? (Sent via Reborro)`;
 
     case 'polite':
     default:
-      return `Hi ${name}, just a quick reminder about the ${description} you borrowed from me. It ${duePhrase}. Could you please return/settle it when you can? (Sent via Borrbox)`;
+      return `Hi ${name}, just a quick reminder about the ${description} you borrowed from me. It ${duePhrase}. Could you please return/settle it when you can? (Sent via Reborro)`;
   }
 }
 

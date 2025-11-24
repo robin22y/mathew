@@ -28,16 +28,16 @@ export function generateReminderMessage(item: {
       return `Hey ${borrowerName}, just a quick reminder about the ${name} you borrowed from me.
 It's due on ${due}.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
     }
 
     // With name, no due date
     if (hasName && !due) {
       return `Hey ${borrowerName}, just a quick reminder about the ${name} you borrowed from me.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
     }
 
     // No name, with due date
@@ -45,15 +45,15 @@ https://app.borrbox.com`;
       return `Hey, just a quick reminder about the ${name} you borrowed from me.
 It's due on ${due}.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
     }
 
     // No name, no due date
     return `Hey, just a quick reminder about the ${name} you borrowed from me.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
   }
 
   //
@@ -66,29 +66,29 @@ https://app.borrbox.com`;
       return `Hey ${borrowerName}, just wanted to confirm about the ${name} I borrowed from you.
 It's due on ${due}. I'll return/settle it on time.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
     }
 
     if (hasName && !due) {
       return `Hey ${borrowerName}, just wanted to confirm about the ${name} I borrowed from you.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
     }
 
     if (!hasName && due) {
       return `Hey, just wanted to confirm about the ${name} I borrowed from you.
 It's due on ${due}. I'll return/settle it on time.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
     }
 
     return `Hey, just wanted to confirm about the ${name} I borrowed from you.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
   }
 
   //
@@ -100,14 +100,14 @@ https://app.borrbox.com`;
   if (hasName) {
     return `Hey ${borrowerName}, just a quick reminder about the ${name} from last time.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
   }
 
   return `Hey, just a quick reminder about the ${name} from last time.${noteText}
 
-(Sent via Borrbox)
-https://app.borrbox.com`;
+(Sent via Reborro)
+https://app.reborro.com`;
 }
 
 export function openWhatsApp(message: string) {

@@ -1,8 +1,8 @@
-export type BorrboxItemType = "money" | "object";
+export type ReborroItemType = "money" | "object";
 
-export interface BorrboxItem {
+export interface ReborroItem {
   id: string;
-  type: BorrboxItemType;
+  type: ReborroItemType;
   personName: string;
   amount?: number;
   itemName?: string;

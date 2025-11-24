@@ -1,25 +1,30 @@
 {
-  "name": "Borrbox",
-  "short_name": "Borrbox",
-  "description": "Track borrowed items and money - Never forget who owes you again",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
-  "orientation": "portrait",
+  "name": "Reborro – remember who owes what",
+  "short_name": "Reborro",
+  "description": "Reborro helps you track who borrowed what, when it's due back, and send quick WhatsApp reminders.",
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-maskable.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "id": "/"
 }
-

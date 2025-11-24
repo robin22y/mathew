@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { LS_FIRST_SEEN_AT, LS_SESSION_COUNT } from '../config/adConfig';
 
-export function useBorrboxSession() {
+export function useReborroSession() {
   const [firstSeenAt, setFirstSeenAt] = useState<number | null>(null);
   const [sessionCount, setSessionCount] = useState<number>(1);
   const [isReturningUser, setIsReturningUser] = useState<boolean>(false);

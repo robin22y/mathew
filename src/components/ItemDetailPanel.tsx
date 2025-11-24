@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import type { BorrboxItem } from '../types';
+import type { ReborroItem } from '../types';
 import ReminderSheet from './ReminderSheet';
 
 interface ItemDetailPanelProps {
   open?: boolean;
   onClose?: () => void;
-  item?: BorrboxItem | null;
+  item?: ReborroItem | null;
   onEdit?: () => void;
   onMarkReturned?: () => void;
   onDelete?: () => void;
@@ -202,7 +202,7 @@ export function ItemDetailPanel({
 
       {showReminder && (
         <ReminderSheet
-          item={item as BorrboxItem}
+          item={item as ReborroItem}
           onClose={() => setShowReminder(false)}
         />
       )}

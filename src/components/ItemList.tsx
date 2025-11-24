@@ -1,9 +1,9 @@
-import type { BorrboxItem } from '../types';
+import type { ReborroItem } from '../types';
 import { getDateStatus } from '../utils/dateStatus';
 
 interface ItemListProps {
-  items: BorrboxItem[];
-  onItemClick?: (item: BorrboxItem) => void;
+  items: ReborroItem[];
+  onItemClick?: (item: ReborroItem) => void;
 }
 
 function getDueStatus(dueDateString: string): { text: string; isOverdue: boolean } {

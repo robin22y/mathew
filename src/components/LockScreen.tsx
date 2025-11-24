@@ -156,7 +156,7 @@ export function LockScreen({
     <div className="fixed inset-0 bg-neutral-950 flex items-center justify-center z-[100]" onClick={handleContainerClick}>
       <div className="max-w-sm w-full px-4">
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-neutral-100 mb-2">BORRBOX</h1>
+          <h1 className="text-2xl font-bold text-neutral-100 mb-2">REBORRO</h1>
           <p className="text-sm text-neutral-400">{title}</p>
         </div>
 

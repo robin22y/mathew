@@ -82,7 +82,7 @@ export function AdBanner({ placement = "top" }: AdBannerProps) {
           </div>
 
           <div className="text-neutral-400 text-xs leading-relaxed">
-            Borrbox Ad Slot — premium text ad
+            Reborro Ad Slot — premium text ad
           </div>
 
           <div className="w-full h-[1px] bg-neutral-800 mt-3"></div>

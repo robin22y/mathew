@@ -8,9 +8,14 @@ interface HeaderProps {
 export function Header({ canInstall = false, onInstallClick, onLock, onOpenSettings }: HeaderProps) {
   return (
     <header className="flex items-center justify-between pt-2 pb-3 px-3 border-b border-neutral-800">
-      <h1 className="text-xl font-bold text-neutral-100 tracking-wide">
-        BORRBOX
-      </h1>
+      <div>
+        <h1 className="text-xl font-bold text-neutral-100 tracking-wide">
+          Reborro
+        </h1>
+        <p className="text-xs text-zinc-400">
+          Remember who borrowed what – and when it's due back.
+        </p>
+      </div>
       <div className="flex items-center gap-3">
         {onLock && (
           <button

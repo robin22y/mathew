@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-const PIN_STORAGE_KEY = 'borrbox-pin';
+const PIN_STORAGE_KEY = 'reborro-pin';
 const INACTIVITY_TIMEOUT = 10 * 60 * 1000;
 
 async function hashPin(pin: string): Promise<string> {
@@ -27,7 +27,8 @@ export function usePinLock() {
   const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const existing = localStorage.getItem("borrbox-pin");
+    // Check new key first, fallback to old key for migration
+    const existing = localStorage.getItem(PIN_STORAGE_KEY) || localStorage.getItem("borrbox-pin");
     if (existing) setHasPin(true);
   }, []);
 
@@ -108,7 +109,8 @@ export function usePinLock() {
 
   const resetAllData = useCallback(() => {
     localStorage.removeItem(PIN_STORAGE_KEY);
-    localStorage.removeItem('borrbox-items');
+    localStorage.removeItem('reborro-items');
+    localStorage.removeItem('borrbox-items'); // Also remove old key
     window.location.reload();
   }, []);
 

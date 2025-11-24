@@ -1,4 +1,4 @@
-# Borrbox
+# Reborro
 
 A one-page, offline-first, dark-mode PWA to track things people borrow or lend, including money.
 
@@ -36,7 +36,7 @@ npm run build
 ```
 src/
   components/     # React components
-  hooks/          # Custom hooks (useBorrboxStore, useInstallPrompt)
+  hooks/          # Custom hooks (useReborroStore, useInstallPrompt)
   types.ts        # TypeScript types
   utils/          # Utility functions
   App.tsx         # Main app component
@@ -46,7 +46,7 @@ src/
 
 ## Data Storage
 
-All data is stored in localStorage under the key `borrbox-items`.
+All data is stored in localStorage under the key `reborro-items` (with automatic migration from `borrbox-items`).
 
 ## PWA
 

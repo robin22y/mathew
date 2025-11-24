@@ -8,14 +8,42 @@ import EnablePinModal from './components/EnablePinModal';
 import { SettingsSheet } from './components/SettingsSheet';
 import { AdBanner } from './components/AdBanner';
 import { FullscreenAd } from './components/FullscreenAd';
-import { useBorrboxStore } from './hooks/useBorrboxStore';
+import { useReborroStore } from './hooks/useReborroStore';
 import { usePWAInstall } from './hooks/usePWAInstall';
 import { usePinLock } from './hooks/usePinLock';
-import type { BorrboxItem } from './types';
+import type { ReborroItem } from './types';
+
+function migrateBorrboxToReborro() {
+  if (localStorage.getItem("reborro-migration-done")) return;
+
+  const keyMap: Record<string, string> = {
+    "borrbox-items": "reborro-items",
+    "borrbox-pin": "reborro-pin",
+    "borrbox-premium": "reborro-premium",
+    "borrbox-last-fullscreen-ad": "reborro-last-fullscreen-ad",
+    "borrbox-first-use-block": "reborro-first-use-block"
+  };
+
+  Object.entries(keyMap).forEach(([oldKey, newKey]) => {
+    try {
+      const value = localStorage.getItem(oldKey);
+      if (value !== null && localStorage.getItem(newKey) === null) {
+        localStorage.setItem(newKey, value);
+      }
+    } catch {
+      // ignore localStorage issues, don't crash app
+    }
+  });
+
+  localStorage.setItem("reborro-migration-done", "1");
+}
+
+// Run migration at module load, before App component renders
+migrateBorrboxToReborro();
 
 function App() {
   const { locked, hasPin, requestUnlock, setNewPin, lockNow, disablePin, resetAllData } = usePinLock();
-  const { items, addItem, updateItem, deleteItem, markReturned, overdueCount, dueThisWeekCount, moneyOwedToMe, moneyIOwe } = useBorrboxStore();
+  const { items, addItem, updateItem, deleteItem, markReturned, overdueCount, dueThisWeekCount, moneyOwedToMe, moneyIOwe } = useReborroStore();
   const {
     canInstall,
     showHint,
@@ -26,8 +54,8 @@ function App() {
   } = usePWAInstall();
   const [isAddSheetOpen, setIsAddSheetOpen] = useState(false);
   const [isDetailPanelOpen, setIsDetailPanelOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<BorrboxItem | null>(null);
-  const [editingItem, setEditingItem] = useState<BorrboxItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<ReborroItem | null>(null);
+  const [editingItem, setEditingItem] = useState<ReborroItem | null>(null);
   const [pinError, setPinError] = useState(false);
   const [showEnablePin, setShowEnablePin] = useState(false);
   const [forcePinSetup, setForcePinSetup] = useState(false);
@@ -64,14 +92,14 @@ function App() {
     setIsAddSheetOpen(true);
   };
 
-  const handleItemClick = (item: BorrboxItem) => {
+  const handleItemClick = (item: ReborroItem) => {
     setSelectedItem(item);
     setIsDetailPanelOpen(true);
   };
 
-  const handleSave = (id: string | null, item: Partial<BorrboxItem> | BorrboxItem) => {
+  const handleSave = (id: string | null, item: Partial<ReborroItem> | ReborroItem) => {
     if (id === null) {
-      addItem(item as BorrboxItem);
+      addItem(item as ReborroItem);
       if (!hasPin) {
         setShowEnablePin(true);
       }
@@ -122,7 +150,7 @@ function App() {
     const url = URL.createObjectURL(dataBlob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'borrbox-backup.json';
+    link.download = 'reborro-backup.json';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -167,7 +195,7 @@ function App() {
         return;
       }
 
-      localStorage.setItem('borrbox-items', JSON.stringify(parsed));
+      localStorage.setItem('reborro-items', JSON.stringify(parsed));
       window.location.reload();
     } catch (error) {
       alert('Failed to import data. Please check the file format.');
@@ -352,7 +380,7 @@ function App() {
             <div className="w-full max-w-sm bg-neutral-900/95 border border-neutral-800 rounded-2xl px-3.5 py-3 flex items-center gap-3 shadow-lg">
               <div className="flex-1">
                 <div className="text-xs font-semibold text-neutral-100 mb-0.5">
-                  {isIos ? "Add Borrbox to your Home Screen" : "Install Borrbox"}
+                  {isIos ? "Add Reborro to your Home Screen" : "Install Reborro"}
                 </div>
                 <div className="text-[11px] text-neutral-400">
                   {isIos

@@ -1,25 +1,26 @@
 import { useEffect, useState } from "react";
-import type { BorrboxItem } from "../types";
+import type { ReborroItem } from "../types";
 
-const STORAGE_KEY = "borrbox-items";
+const STORAGE_KEY = "reborro-items";
 
-function loadItemsFromStorage(): BorrboxItem[] {
+function loadItemsFromStorage(): ReborroItem[] {
   if (typeof window === "undefined") return [];
 
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    // Check new key first, fallback to old key for migration
+    const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("borrbox-items");
     if (!raw) return [];
 
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
 
-    return parsed as BorrboxItem[];
+    return parsed as ReborroItem[];
   } catch {
     return [];
   }
 }
 
-function saveItemsToStorage(items: BorrboxItem[]) {
+function saveItemsToStorage(items: ReborroItem[]) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   } catch {
@@ -27,20 +28,20 @@ function saveItemsToStorage(items: BorrboxItem[]) {
   }
 }
 
-export function useBorrboxStore() {
-  const [items, setItems] = useState<BorrboxItem[]>(() => loadItemsFromStorage());
+export function useReborroStore() {
+  const [items, setItems] = useState<ReborroItem[]>(() => loadItemsFromStorage());
 
   // persist whenever items change
   useEffect(() => {
     saveItemsToStorage(items);
   }, [items]);
 
-  function addItem(item: BorrboxItem) {
-    // assume AddItemSheet already gave us a full BorrboxItem with id etc
+  function addItem(item: ReborroItem) {
+    // assume AddItemSheet already gave us a full ReborroItem with id etc
     setItems(prev => [...prev, item]);
   }
 
-  function updateItem(id: string, updates: Partial<BorrboxItem>) {
+  function updateItem(id: string, updates: Partial<ReborroItem>) {
     setItems(prev =>
       prev.map(item => (item.id === id ? { ...item, ...updates } : item))
     );

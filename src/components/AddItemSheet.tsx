@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import type { BorrboxItem } from '../types';
+import type { ReborroItem } from '../types';
 
 interface AddItemSheetProps {
   open?: boolean;
   onClose?: () => void;
-  editingItem?: BorrboxItem | null;
-  onSave?: (id: string | null, item: Partial<BorrboxItem> | BorrboxItem) => void;
+  editingItem?: ReborroItem | null;
+  onSave?: (id: string | null, item: Partial<ReborroItem> | ReborroItem) => void;
 }
 
 export function AddItemSheet({ open = false, onClose, editingItem, onSave }: AddItemSheetProps) {
@@ -54,7 +54,7 @@ export function AddItemSheet({ open = false, onClose, editingItem, onSave }: Add
     if (!dueDate) return;
 
     if (editingItem) {
-      const updates: Partial<BorrboxItem> = {
+      const updates: Partial<ReborroItem> = {
         type,
         direction,
         borrowDirection,
@@ -67,7 +67,7 @@ export function AddItemSheet({ open = false, onClose, editingItem, onSave }: Add
       };
       onSave?.(editingItem.id, updates);
     } else {
-      const newItem: BorrboxItem = {
+      const newItem: ReborroItem = {
         id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         type,
         direction,
