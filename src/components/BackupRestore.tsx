@@ -137,9 +137,7 @@ export function BackupRestore() {
     returnedDateLabel: item.returnedAt ? formatDate(item.returnedAt) : "Unknown",
   }));
 
-  const deleteReturned = (id: string) => {
-    deleteReturnedItem(id);
-  };
+ 
 
   return (
     <div className="w-full compact-section">
