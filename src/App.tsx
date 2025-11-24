@@ -62,6 +62,7 @@ function App() {
   const [forcePinSetup, setForcePinSetup] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isFullscreenAdOpen, setIsFullscreenAdOpen] = useState(false);
+  const [backupHint, setBackupHint] = useState(false);
 
   // Track app open date on first render
   useEffect(() => {
@@ -141,6 +142,9 @@ function App() {
       deleteItem(selectedItem.id);
       setIsDetailPanelOpen(false);
       setSelectedItem(null);
+      setBackupHint(true);
+      // Auto-dismiss after 5 seconds
+      setTimeout(() => setBackupHint(false), 5000);
     }
   };
 
@@ -244,6 +248,14 @@ function App() {
           <div className="px-4 py-4">
             <BackupRestore />
           </div>
+
+          {backupHint && (
+            <div className="px-4 mt-3">
+              <div className="text-xs text-zinc-500 text-center">
+                Tip: Export a backup if you're switching devices.
+              </div>
+            </div>
+          )}
 
           <div className="px-4 pb-4">
             <QuoteBar />
